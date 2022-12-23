@@ -1,14 +1,16 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Form, Icone, ContainerEntrada } from "./styled"
 import logo from '../assets/logo.png'
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import { BASE_URL } from "../constants/urls"
+import UserContext from "../context"
 
 
 export default function TelaEntrada(setImagem) {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
+    const {guardarToken} = useContext(UserContext)
     const navigate = useNavigate()
 
     function entrada(e) {
@@ -23,7 +25,14 @@ export default function TelaEntrada(setImagem) {
         req.catch((err) => console.log(err.response.data))
         
         function resposta(resp) {
-            alert('Deu certo!')
+            // alert('Deu certo!')
+            guardarToken(resp.data.token)
+            if (resp.data.membership === null) {
+                navigate('/subscriptions')
+            }
+            else {
+                navigate('/home')
+            }
         }
     }
 
