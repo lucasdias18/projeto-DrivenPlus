@@ -43,4 +43,6 @@ font-size: 24px;
 font-weight: 700;
 line-height: 28px;
 color: #FFFFFF;
+text-decoration: none;
 `
+

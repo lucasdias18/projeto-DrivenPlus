@@ -4,6 +4,7 @@ import TelaCadastro from './TelaCadastro/TelaCadastro';
 import { useState } from 'react';
 import UserContext from "./context";
 import TelaPlanos from './TelaPlanos/TelaPlanos';
+import Plano from './Plano/Plano';
 // import TelaHabitos from './TelaHabitos/TelaHabitos';
 
 export default function App() {
@@ -23,7 +24,7 @@ export default function App() {
 					<Route path="/" element={<TelaEntrada />} />
 					<Route path="/cadastro" element={<TelaCadastro />}/>
 					<Route path="/subscriptions" element={<TelaPlanos />} />
-					{/* <Route path="/sucesso" element={<Sucesso sucesso={sucesso} />} /> */}
+					<Route path="/subscriptions/:idPlano" element={<Plano />} />
 				</Routes>
 			</BrowserRouter>
 		</UserContext.Provider>

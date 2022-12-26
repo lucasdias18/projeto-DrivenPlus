@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { BASE_URL } from "../constants/urls"
 import UserContext from "../context"
@@ -34,7 +35,7 @@ export default function TelaPlanos() {
                 {
                     plans.map((p) => {
                         return (
-                            <Plano image={p.image} price={p.price} />
+                            <Plano image={p.image} price={p.price} id={p.id} />
                         )
                     })
                 }
@@ -45,9 +46,11 @@ export default function TelaPlanos() {
 
 function Plano(props) {
     return (
-        <CaixaPlano>
-            <Imagem src={props.image} />
-            <Preco>R$ {props.price}</Preco>
-        </CaixaPlano>
+        <Link key={props.id} to={`/subscriptions/${props.id}`}>
+            <CaixaPlano>
+                <Imagem src={props.image} />
+                <Preco>R$ {props.price}</Preco>
+            </CaixaPlano>
+        </Link>
     )
 }
