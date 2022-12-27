@@ -1,20 +1,26 @@
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { BASE_URL } from "../constants/urls"
 import UserContext from "../context"
-import { Beneficio, Beneficios, Caixa, CaixaLogo, ContainerInformacoes, Imagem, Preco, Texto, Titulo } from "./styled"
+import { AbrirModal, Beneficio, Beneficios, BotaoVoltar, CaixaB, CaixaBotao, CaixaLogo, CaixaP, ContainerInformacoes, FecharModal, Form, Imagem, Logo, Modal, Nao, Preco, Price, Sim, Text, Texto, Titulo } from "./styled"
 import ben from '../assets/ben.png'
 import preco from '../assets/price.png'
-import styled from "styled-components"
+import voltar from '../assets/voltar.png'
+import fechar from '../assets/fechar.png'
 
 export default function Plano() {
     const [plan, setPlan] = useState(undefined)
     const [beneficios, setBeneficios] = useState(undefined)
-    
+    const [nomecartao, setNomecartao] = useState('')
+    const [numcartao, setNumcartao] = useState('')
+    const [segcartao, setSegcartao] = useState('')
+    const [valcartao, setValcartao] = useState('')
+    const [habilitado, setHabilitado] = useState(false)
+    const [memberId, setMemberId] = useState('')
+    const navigate = useNavigate()
     const {token} = useContext(UserContext)
     const {idPlano} = useParams()
-    console.log(token)
 
     useEffect(() => {
         const req = axios.get(`${BASE_URL}/subscriptions/memberships/${idPlano}`, {headers: {Authorization:`Bearer ${token}`}})
@@ -22,29 +28,50 @@ export default function Plano() {
         req.then((resp) => {
             setPlan(resp.data)
             setBeneficios(plan.perks)
+            setMemberId(plan.id)
             console.log(plan)
             console.log(beneficios)
+            console.log(memberId)
             
         })
         req.catch((err) => console.log(err.response.data))
     }, [])
 
+    function abrirModal(e) {
+        e.preventDefault()
+       setHabilitado(true)
+    }
+
     function assinatura() {
-        alert('Deu certo!')
+        const dados = {
+            membershipId: memberId,
+            cardName: nomecartao,
+            cardNumber: numcartao,
+            securityNumber: Number(segcartao),
+            expirationDate: valcartao
+        }
+        console.log(dados)
+        const req = axios.post(`${BASE_URL}/subscriptions`, dados, {headers: {Authorization:`Bearer ${token}`}})
+        req.then((resp) => navigate('/home'))
+        req.catch((err) => alert('Deu errado!'))
+
     }
 
     return (
         <>
         <ContainerInformacoes>
+            <Link to='/subscriptions'>
+                <BotaoVoltar src={voltar} />
+            </Link>
             <CaixaLogo>
-                <Imagem src={plan.image} />
+                <Logo src={plan.image} />
                 <Titulo>{plan.name}</Titulo>
             </CaixaLogo>
             <Beneficios>
-                <Caixa>
+                <CaixaB>
                     <Imagem src={ben} />
                     <Texto>Benefícios:</Texto>
-                </Caixa>
+                </CaixaB>
                 {
                     beneficios.map((b) => {
                         return (
@@ -54,22 +81,50 @@ export default function Plano() {
                 }
             </Beneficios>
             <Preco>
-                <Caixa>
+                <CaixaP>
                     <Imagem src={preco} />
-                    <Texto>{plan.price} cobrados mensalmente</Texto>
-                </Caixa>
+                    <Texto>Preço:</Texto>
+                </CaixaP>
+                <Price>R$ {plan.price} cobrados mensalmente</Price>
             </Preco>
+            <Form onSubmit={abrirModal}>
+                <input type='text' id="nomecartao" placeholder="Nome impresso no cartão" value={nomecartao} onChange={e => setNomecartao(e.target.value)} required />
+                <input type='text' id="numcartao" placeholder="Dígitos do cartão" value={numcartao} onChange={e => setNumcartao(e.target.value)} required />
+                <div>
+                    <input
+                     type='text'
+                     id='segcartao'
+                     placeholder='Código de segurança do cartão'
+                     value={segcartao}
+                     onChange={e => setSegcartao(e.target.value)}
+                     required
+                     />
+                    <input
+                     type='text'
+                     id='valcartao'
+                     placeholder='Validade'
+                     value={valcartao}
+                     onChange={e => setValcartao(e.target.value)}
+                     required 
+                     />
+                </div>
+                <button type="submit">Cadastrar</button>
+            </Form>
         </ContainerInformacoes>
-        <Form onSubmit={assinatura}>
-            {/* <input type='text' id="nome" placeholder="Nome" value={nome} onChange={e => setNome(e.target.value)} required />
-            <input type='text' id="foto" placeholder="CPF" value={cpf} onChange={e => setCpf(e.target.value)} required />
-            <input type='email' id='email' placeholder='E-mail' value={email} onChange={e => setEmail(e.target.value)} required />
-            <input type='password' id='senha' placeholder='Senha' value={senha} onChange={e => setSenha(e.target.value)} required /> */}
-            <button type="submit">Cadastrar</button>
-        </Form>
+
+        <AbrirModal habilitado={habilitado}>
+            <FecharModal onClick={() => setHabilitado(false)}>
+                <img src={fechar} />
+            </FecharModal>
+            <Modal>
+                <Text>Tem certeza que deseja assinar o plano {plan.name} (R$ {plan.price})?</Text>
+                <CaixaBotao>
+                    <Nao onClick={() => setHabilitado(false)}>Não</Nao>
+                    <Sim onClick={assinatura}>Sim</Sim>
+                </CaixaBotao>
+            </Modal>
+        </AbrirModal>
         </>
     )
 }
-
-const Form = styled.form``
 

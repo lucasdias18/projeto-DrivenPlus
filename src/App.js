@@ -5,33 +5,38 @@ import { useState } from 'react';
 import UserContext from "./context";
 import TelaPlanos from './TelaPlanos/TelaPlanos';
 import Plano from './Plano/Plano';
-// import TelaHabitos from './TelaHabitos/TelaHabitos';
+import TelaHome from './TelaHome.js/TelaHome';
 
 export default function App() {
 	const tokenOnLS = localStorage.getItem("token");
+	const userOnLS = localStorage.getItem('user');
 	const [token, setToken] = useState(tokenOnLS);
+	const [user, setUser] = useState(userOnLS);
 
 	function guardarToken(token) {
 		setToken(token);
 		localStorage.setItem("token", token);
 	}
 
+	function guardarUser(user) {
+		setUser(user);
+		localStorage.setItem("user", user);
+	}
+
   return (
-		<UserContext.Provider value={{token, setToken, guardarToken}}>
+		<UserContext.Provider value={{token, setToken, guardarToken, user, setUser, guardarUser}}>
 			<BrowserRouter>
-				{/* <Header /> */}
 				<Routes>
 					<Route path="/" element={<TelaEntrada />} />
 					<Route path="/cadastro" element={<TelaCadastro />}/>
 					<Route path="/subscriptions" element={<TelaPlanos />} />
 					<Route path="/subscriptions/:idPlano" element={<Plano />} />
+					<Route path='/home' element={<TelaHome />} />
 				</Routes>
 			</BrowserRouter>
 		</UserContext.Provider>
 	);
 }
 
-
-// import UserContext from "./contexts/UserContext";
 
 

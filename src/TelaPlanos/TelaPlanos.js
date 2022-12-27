@@ -13,19 +13,11 @@ export default function TelaPlanos() {
 
     useEffect(() => {
         const req = axios.get(`${BASE_URL}/subscriptions/memberships`, {headers: {Authorization:`Bearer ${token}`}})
-        // { headers: { Authorization: `Bearer ${token}` } };
 
-        req.then((resp) => {setPlans(resp.data)
-                            console.log(resp.data)})
+        req.then((resp) => setPlans(resp.data))
         req.catch((resp) => console.log(resp.response.data))
     }, []);
 
-    // useEffect(() => {
-    //     const requisicao = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`)
-
-    //     requisicao.then((resposta) => setAssento(resposta.data))
-    //     requisicao.catch((erro) => console.log(erro.data))
-    // }, []);
 
 
     return (

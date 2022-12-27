@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { Form, ContainerCadastro } from "./styled"
-// import logo from '../assets/logo.png'
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import { BASE_URL } from "../constants/urls"
@@ -31,21 +30,16 @@ export default function TelaEntrada() {
 
     return (
         <ContainerCadastro>
-
-        {/* <Icone src={logo} /> */}
-        <Form onSubmit={cadastro}>
-            {/* <input type='email' id="email" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)} required /> */}
-            {/* <input type='password' id="senha" placeholder="Senha" value={senha} onChange={e => setSenha(e.target.value)} required /> */}
-            <input type='text' id="nome" placeholder="Nome" value={nome} onChange={e => setNome(e.target.value)} required />
-            <input type='text' id="foto" placeholder="CPF" value={cpf} onChange={e => setCpf(e.target.value)} required />
-            <input type='email' id='email' placeholder='E-mail' value={email} onChange={e => setEmail(e.target.value)} required />
-            <input type='password' id='senha' placeholder='Senha' value={senha} onChange={e => setSenha(e.target.value)} required />
-            <button type="submit">Cadastrar</button>
-        </Form>
-        <Link to={`/`}>
-            <a>Já possui uma conta? Entre</a>
-        </Link>
-        
+            <Form onSubmit={cadastro}>
+                <input type='text' id="nome" placeholder="Nome" value={nome} onChange={e => setNome(e.target.value)} required />
+                <input type='text' id="foto" placeholder="CPF" value={cpf} onChange={e => setCpf(e.target.value)} required />
+                <input type='email' id='email' placeholder='E-mail' value={email} onChange={e => setEmail(e.target.value)} required />
+                <input type='password' id='senha' placeholder='Senha' value={senha} onChange={e => setSenha(e.target.value)} required />
+                <button type="submit">Cadastrar</button>
+            </Form>
+            <Link to={`/`}>
+                <a>Já possui uma conta? Entre</a>
+            </Link>
         </ContainerCadastro>
     )
 }

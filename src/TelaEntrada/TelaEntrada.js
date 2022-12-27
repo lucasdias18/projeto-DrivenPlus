@@ -11,6 +11,7 @@ export default function TelaEntrada(setImagem) {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const {guardarToken} = useContext(UserContext)
+    const {guardarUser} = useContext(UserContext)
     const navigate = useNavigate()
 
     function entrada(e) {
@@ -18,15 +19,11 @@ export default function TelaEntrada(setImagem) {
         const dados = {email: email, password: senha}
         const req = axios.post(`${BASE_URL}/auth/login`, dados)
         req.then(resposta)
-        // req.then(resp => { alert('Deu certo!')
-        //     //               setImagem({imagem: resp.data.image})  
-        //     // navigate("/habitos")
-        //     })
-        req.catch((err) => console.log(err.response.data))
+        req.catch((err) => alert('Deu errado!'))
         
         function resposta(resp) {
-            // alert('Deu certo!')
             guardarToken(resp.data.token)
+            guardarUser(resp.data)
             if (resp.data.membership === null) {
                 navigate('/subscriptions')
             }
@@ -39,15 +36,15 @@ export default function TelaEntrada(setImagem) {
     return (
         <ContainerEntrada>
 
-        <Icone src={logo} />
-        <Form onSubmit={entrada}>
-            <input type='email' id="email" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)} required />
-            <input type='password' id="senha" placeholder="Senha" value={senha} onChange={e => setSenha(e.target.value)} required />
-            <button type="submit">Entrar</button>
-        </Form>
-        <Link to={`/cadastro`}>
-            <a>Não tem uma conta? Cadastre-se</a>
-        </Link>
+            <Icone src={logo} />
+            <Form onSubmit={entrada}>
+                <input type='email' id="email" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)} required />
+                <input type='password' id="senha" placeholder="Senha" value={senha} onChange={e => setSenha(e.target.value)} required />
+                <button type="submit">Entrar</button>
+            </Form>
+            <Link to={`/cadastro`}>
+                <a>Não tem uma conta? Cadastre-se</a>
+            </Link>
         
         </ContainerEntrada>
     )
