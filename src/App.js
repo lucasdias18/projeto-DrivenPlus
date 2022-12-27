@@ -11,7 +11,7 @@ export default function App() {
 	const tokenOnLS = localStorage.getItem("token");
 	const userOnLS = localStorage.getItem('user');
 	const [token, setToken] = useState(tokenOnLS);
-	const [user, setUser] = useState(userOnLS);
+	const [user, setUser] = useState(JSON.parse(userOnLS));
 
 	function guardarToken(token) {
 		setToken(token);
@@ -20,7 +20,7 @@ export default function App() {
 
 	function guardarUser(user) {
 		setUser(user);
-		localStorage.setItem("user", user);
+		localStorage.setItem("user", JSON.stringify(user));
 	}
 
   return (

@@ -19,7 +19,7 @@ export default function Plano() {
     const [habilitado, setHabilitado] = useState(false)
     const [memberId, setMemberId] = useState('')
     const navigate = useNavigate()
-    const {token} = useContext(UserContext)
+    const {user, guardarUser, token} = useContext(UserContext)
     const {idPlano} = useParams()
 
     useEffect(() => {
@@ -27,12 +27,8 @@ export default function Plano() {
 
         req.then((resp) => {
             setPlan(resp.data)
-            setBeneficios(plan.perks)
-            setMemberId(plan.id)
-            console.log(plan)
-            console.log(beneficios)
-            console.log(memberId)
-            
+            setBeneficios(resp.data.perks)
+            setMemberId(resp.data.id) 
         })
         req.catch((err) => console.log(err.response.data))
     }, [])
@@ -50,13 +46,16 @@ export default function Plano() {
             securityNumber: Number(segcartao),
             expirationDate: valcartao
         }
-        console.log(dados)
         const req = axios.post(`${BASE_URL}/subscriptions`, dados, {headers: {Authorization:`Bearer ${token}`}})
-        req.then((resp) => navigate('/home'))
+        req.then((resp) => {
+            guardarUser({...user, membership:resp.data.membership})
+            navigate('/home')
+        })
         req.catch((err) => alert('Deu errado!'))
 
     }
 
+    if(plan !== undefined) {
     return (
         <>
         <ContainerInformacoes>
@@ -126,5 +125,6 @@ export default function Plano() {
         </AbrirModal>
         </>
     )
+}
 }
 

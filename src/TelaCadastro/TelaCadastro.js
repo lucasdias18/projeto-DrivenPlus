@@ -22,8 +22,7 @@ export default function TelaEntrada() {
         }
         const req = axios.post(`${BASE_URL}/auth/sign-up`, dados)
         req.then(resp => {
-                          console.log(resp.data)  
-            navigate("/")
+                    navigate("/")
             })
         req.catch((err) => alert('Deu errado!'))
     }

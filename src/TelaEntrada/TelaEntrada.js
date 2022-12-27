@@ -7,7 +7,7 @@ import { BASE_URL } from "../constants/urls"
 import UserContext from "../context"
 
 
-export default function TelaEntrada(setImagem) {
+export default function TelaEntrada() {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const {guardarToken} = useContext(UserContext)

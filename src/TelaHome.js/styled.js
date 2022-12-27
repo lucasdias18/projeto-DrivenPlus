@@ -7,12 +7,6 @@ justify-content: center;
 position: relative;
 `
 
-export const Usuario = styled.div`
-display: flex;
-justify-content: space-between;
-padding: 22px 22px 0 38px;
-`
-
 export const Logo = styled.img`
 height: 51px;
 position: absolute;
